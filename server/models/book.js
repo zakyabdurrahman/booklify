@@ -11,17 +11,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Book.hasMany(models.Review);
+      
     }
   }
   Book.init({
-    title: DataTypes.STRING,
-    coverUrl: DataTypes.STRING,
-    description: DataTypes.STRING,
-    genre: DataTypes.STRING,
-    releaseDate: DataTypes.DATE
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    coverUrl: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    genre: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    releaseDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    }
   }, {
     sequelize,
-    modelName: 'Book',
+    modelName: 'Book'
   });
   return Book;
 };

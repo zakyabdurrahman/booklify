@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { hashPass } = require('../helpers/helpers');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -59,5 +60,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.addHook('beforeCreate', (user, options) => {
+    user.password = hashPass(user.password);
+  })
+
   return User;
 };

@@ -31,6 +31,20 @@ export default function LoginPage() {
         }
     }
 
+    async function googleLogin(googleResponse) {
+        try {
+            const {data} = await axios.post(`${baseUrl}/google-login`, null, {
+                headers: {
+                    token: googleResponse.credential
+                }
+            })
+
+            console.log(data);
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
+
     return (
         <>
             <div className="h-screen flex w-screen justify-center items-center">
@@ -69,9 +83,7 @@ export default function LoginPage() {
                         </form>
                         <div className="divider">OR</div>
                         <div className="flex justify-center">
-                            <GoogleLogin onSuccess={credentialResponse => {
-                                console.log(credentialResponse);
-                            }}/>
+                            <GoogleLogin onSuccess={googleLogin} onError={() => toast.error('Google login failed. Please contact Sundar Pichai for help')}/>
                         </div>
                         
                         <p className="text-center text-sm mt-2">Don't have an account? Signup</p>

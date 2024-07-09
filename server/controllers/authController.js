@@ -1,5 +1,7 @@
 const { comparePass, signToken } = require('../helpers/helpers');
 const {User} = require('../models');
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client();
 
 class AuthController {
     static async login(req, res, next) {
@@ -60,6 +62,49 @@ class AuthController {
                 profile: newUser.profileUrl
             })
 
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
+    }
+
+    static async googleLogin(req, res, next) {
+        try {
+            
+            const {token} = req.headers;
+
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: "1085766305930-me9l40ne3to9fauh9jggjf4lcv791fsb.apps.googleusercontent.com"
+            })
+
+            const payload = ticket.getPayload();
+            console.log(payload);
+
+            const {name, picture} = payload;
+
+            //find or create new if not exist yet
+            const [user, created] = await User.findOrCreate({
+                where: {
+                    username: name
+                }, defaults: {
+                    username: name,
+                    password: "Pusat Data Nasional Sementara 2",
+                    profileUrl: picture
+                }
+            })
+
+            const access_token = signToken({
+                userId: user.id,
+                username: user.username
+            })
+
+            res.status(200).json({
+                access_token,
+                username: user.username,
+                profile: user.profileUrl
+            })
+ 
         } catch (error) {
             console.log(error);
             next(error);

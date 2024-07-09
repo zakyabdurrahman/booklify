@@ -3,7 +3,8 @@ import router from './routers/router'
 import 'react-toastify/dist/ReactToastify.css';
 import { Slide, ToastContainer } from 'react-toastify';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-
+import { Provider } from 'react-redux';
+import store from './app/store'
 
 
 function App() {
@@ -12,9 +13,12 @@ function App() {
 
   return (
     <>
-      <GoogleOAuthProvider clientId='1085766305930-me9l40ne3to9fauh9jggjf4lcv791fsb.apps.googleusercontent.com'>
-        <RouterProvider router={router}/>
-      </GoogleOAuthProvider>
+      <Provider store={store}>
+        <GoogleOAuthProvider clientId='1085766305930-me9l40ne3to9fauh9jggjf4lcv791fsb.apps.googleusercontent.com'>
+          <RouterProvider router={router}/>
+        </GoogleOAuthProvider>
+      </Provider>
+      
       
       <ToastContainer
         position="top-center"

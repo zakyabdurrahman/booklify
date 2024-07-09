@@ -27,22 +27,42 @@ class AuthController {
             })
 
             res.status(200).json({
-                access_token
+                access_token,
+                username: user.username,
+                profile: user.profileUrl
             })
 
         } catch(error) {
-            console.log(error)
-            let status = 500;
-            let message = `Internal server error`;
+            console.log(error);
+            next(error);
+        }
+    }
 
-            if (error.name === 'Unauthorized') {
-                status = 401;
-                message = error.msg;
-            }
+    static async register(req, res, next) {
+        try {
+            ///register
+            const {username, password, profileUrl} = req.body;
 
-            res.status(status).json({
-                message
+            const newUser = await User.create({
+                username,
+                password,
+                profileUrl
+            });
+
+            const access_token = signToken({
+                userId: newUser.id,
+                username: newUser.username,
             })
+
+            res.status(200).json({
+                access_token,
+                username: newUser.username,
+                profile: newUser.profileUrl
+            })
+
+        } catch (error) {
+            console.log(error);
+            next(error);
         }
     }
 }

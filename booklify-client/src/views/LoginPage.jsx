@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import baseUrl from "../utils/constant";
 import { GoogleLogin } from "@react-oauth/google";
+import { useDispatch } from "react-redux";
+import { setUsername } from "../features/userSlice";
 
 export default function LoginPage() {
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     async function handleLogin(e) {
@@ -20,7 +22,7 @@ export default function LoginPage() {
                 password
             })
             
-            const {access_token} = response.data;
+            const {access_token, profile} = response.data;
             localStorage.setItem('access_token', access_token);
             navigate('/');
 
@@ -39,10 +41,11 @@ export default function LoginPage() {
                 }
             })
 
-            const {access_token} = data;
+            const {access_token, username, profile} = data;
             localStorage.setItem('access_token', access_token);
             
             console.log(data);
+            dispatch(setUsername(username))
             navigate('/');
 
         } catch (error) {

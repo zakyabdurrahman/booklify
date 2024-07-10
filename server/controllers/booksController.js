@@ -13,7 +13,7 @@ class BooksController {
                 }
             })
 
-            console.log(response.data.items[0]);
+            
             
             res.status(200).json({
                 message: 'Success hitting google books',
@@ -21,6 +21,7 @@ class BooksController {
                     
 
                     const {
+                        id,
                         volumeInfo : {
                             title,
                             authors,
@@ -29,7 +30,8 @@ class BooksController {
                             pageCount,
                             categories,
                             description,
-                            imageLinks
+                            imageLinks,
+                            language
                         }
                     } = item
                     
@@ -41,7 +43,9 @@ class BooksController {
                         pageCount,
                         categories,
                         description,
-                        imageLinks
+                        imageLinks,
+                        id,
+                        language
                     }
 
 

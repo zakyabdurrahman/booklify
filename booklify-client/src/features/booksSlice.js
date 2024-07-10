@@ -43,6 +43,7 @@ export const fetchBooks = (title) => {
                     Authorization: getBearerToken()
                 }
             })
+            console.log(response.data.data, 'BOOKS');
             dispatch(booksReceived(response.data.data))
             
         } catch (error) {

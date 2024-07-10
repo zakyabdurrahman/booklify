@@ -32,10 +32,10 @@ const booksSlice = createSlice({
 export const {booksError, booksLoading, booksReceived} = booksSlice.actions;
 
 export const fetchBooks = (title) => {
-    async (dispatch) => {
+    return async (dispatch) => {
         try {
             dispatch(booksLoading(true));
-            const response = await axios.get(`${baseUrl}`, {
+            const response = await axios.get(`${baseUrl}/books`, {
                 params: {
                     title
                 }, 

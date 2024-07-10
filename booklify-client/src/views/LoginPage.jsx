@@ -4,9 +4,11 @@ import { toast } from "react-toastify";
 import baseUrl from "../utils/constant";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
-import { setUsername } from "../features/userSlice";
+import { setProfile, setUsername } from "../features/userSlice";
 
 export default function LoginPage() {
+
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,9 +23,10 @@ export default function LoginPage() {
                 username,
                 password
             })
-            
+            console.log(response.data);
             const {access_token, profile} = response.data;
             localStorage.setItem('access_token', access_token);
+            dispatch(setUsername(response.data.username));
             navigate('/');
 
 

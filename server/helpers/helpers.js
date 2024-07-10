@@ -15,4 +15,10 @@ function signToken(payload) {
     return token;
 }
 
-module.exports = {hashPass, comparePass, signToken}
+function decodeToken(token) {
+    const payload = jwt.verify(token, process.env.SECRET_KEY);    
+    
+    return payload;
+}
+
+module.exports = {hashPass, comparePass, signToken, decodeToken}
